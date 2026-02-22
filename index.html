@@ -108,7 +108,6 @@
         font-size: 14px;
       }
 
-      /* Tags Styling */
       .tags {
         display: flex;
         gap: 16px;
@@ -165,7 +164,7 @@
     <header class="header-bg"></header>
 
     <main class="container">
-      <button
+      <!-- <button
         class="btn"
         style="
           background-color: hsl(180, 29%, 50%);
@@ -180,61 +179,83 @@
         "
       >
         Add
-      </button>
+      </button> -->
     </main>
     <script>
       const btn = document.querySelector(".btn");
       const container = document.querySelector(".container");
       const URL = "./data.json";
-      console.log(URL);
+
       async function addNew() {
         const promise = await fetch(URL);
         const data = await promise.json();
         for (let i = 0; i < data.length; i++) {
           let box = document.createElement("div");
           box.innerHTML = `
-           <div class="job-card featured">
-        <div class="job-info">
-          <img src="${data[i].logo}" alt="Photosnap" class="logo" />
-          <div class="details">
-            <div class="top-row">
-              <span class="company">${data[i].company}</span>
-              <span class="badge new"> ${data[i].new ? `<span class="badge new">NEW!</span>` : ""}</span>
-              <span class="badge feat">${data[i].featured ? `<span class="badge feat">FEATURED</span>` : ""}</span>
+                 <div class="job-card featured">
+              <div class="job-info">
+                <img src="${data[i].logo}" alt="Photosnap" class="logo" />
+                <div class="details">
+                  <div class="top-row">
+                    <span class="company">${data[i].company}</span>
+                     ${data[i].new ? `<span class="badge new">NEW!</span>` : ""}
+                     ${data[i].featured ? `<span class="badge feat">Featured</span>` : ""}
+                  </div>
+                  <h2 class="position">${data[i].position}</h2>
+                  <div
+                    class="meta"
+                    style="
+                      display: flex;
+                      flex-direction: row;
+                      justify-content: center;
+                      align-items: center;
+                      gap: 20px;
+                    "
+                  >
+                    <p class="postedat">${data[i].postedAt}</p>
+                    <p class="contract">• ${data[i].contract}</p>
+                    <p class="location">• ${data[i].location}</p>
+                  </div>
+                </div>
+              </div>
+              <hr class="mobile-divider" />
+              <div class="tags">
+                  <span>${data[i].role}</span>
+                <span>${data[i].level}</span>
+
+              ${data[i].languages[0] ? `<span>${data[i].languages[0]}</span>` : ""}
+                ${data[i].languages[1] ? `<span>${data[i].languages[1]}</span>` : ""}
+                  ${data[i].languages[2] ? `<span>${data[i].languages[2]}</span>` : ""}
+
+              </div>
             </div>
-            <h2 class="position">${data[i].position}</h2>
-            <div
-              class="meta"
-              style="
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                align-items: center;
-                gap: 20px;
-              "
-            >
-              <p class="postedat">${data[i].postedAt}</p>
-              <p class="contract">• ${data[i].contract}</p>
-              <p class="location">• ${data[i].location}</p>
-            </div>
-          </div>
-        </div>
-        <hr class="mobile-divider" />
-        <div class="tags">
-          <span>Frontend</span>
-          <span>Senior</span>
-          <span>HTML</span>
-          <span>CSS</span>
-          <span>JavaScript</span>
-        </div>
-      </div>
-          `;
+                `;
           const container = document.querySelector(".container");
           container.appendChild(box);
+
+          const spans = document.querySelectorAll(".tags span");
+
+          for (let j = 0; j < spans.length; j++) {
+            let span = spans[j];
+            span.addEventListener("click", function () {
+              if (span.textContent === "Frontend") {
+                const role = box.querySelector(".tags span").textContent;
+                if (role !== "Frontend") {
+                  box.remove();
+                }
+              }
+              if (span.textContent === "Fullstack") {
+                const role2 = box.querySelector(".tags span").textContent;
+                if (role2 !== "Fullstack") {
+                  box.remove();
+                }
+              }
+            });
+          }
         }
       }
 
-      btn.addEventListener("click", addNew);
+      document.addEventListener("DOMContentLoaded", addNew);
     </script>
   </body>
 </html>
